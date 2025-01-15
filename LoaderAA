@@ -45,7 +45,7 @@ local scriptURLs = {
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/JoinNotifier.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Lobby.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/LockWaves.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Misc.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Miscal.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlaceUnit.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlayerUptime.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/SendEndGameInfo.lua"
