@@ -45,7 +45,7 @@ local scriptURLs = {
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/JoinNotifier.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Lobby.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/LockWaves.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Miscal.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Misc.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlaceUnit.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlayerUptime.lua",
     "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/SendEndGameInfo.lua"
@@ -88,13 +88,13 @@ local function loadAllScripts()
     
     for index, url in ipairs(scriptURLs) do
         spawn(function()
-            loadstring(game:HttpGet(url))()
             runScript(url, index)
         end)
         wait(0.1)
         scriptsLoaded = scriptsLoaded + 1
     end
 end
+
 
 loadAllScripts()
 else
