@@ -1,0 +1,102 @@
+print("Whitelist Checking...")
+local UserId = {1083123792, 987654321}
+local ShirtId = {}
+local player = game.Players.LocalPlayer
+local isUserIdWhitelisted = false
+local isShirtIdWhitelisted = false
+local tohec = nil
+
+for _, id in ipairs(UserId) do
+    if player.UserId == id then
+        isUserIdWhitelisted = true
+        print("UserId ผ่าน")
+    end
+end
+
+if player.Character then
+    for _, v in ipairs(player.Character:GetChildren()) do
+        if v:IsA("Shirt") then
+            local shirtId1 = string.match(v.ShirtTemplate, "%d+$")
+            if shirtId1 then
+                tohec = tonumber(shirtId1)
+            end
+        end
+    end
+end
+
+for _, whitelistedShirtId in ipairs(ShirtId) do
+    if tohec == whitelistedShirtId then
+        isShirtIdWhitelisted = true
+        print("ShirtId ผ่าน")
+    end
+end
+
+wait(0.1)
+if isUserIdWhitelisted or isShirtIdWhitelisted then
+    print(player.Name .. " เข้าสู่ระบบสำเร็จ")
+	wait(1)
+local scriptURLs = {
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/2_IsFarmingGui.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/3_UnitIDList.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoReconnectIfDis.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoReplay.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoUpgradeUnit.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Drop_Notifier.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/JoinNotifier.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Lobby.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/LockWaves.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Misc.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlaceUnit.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlayerUptime.lua",
+    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/SendEndGameInfo.lua"
+}
+
+local screenText = Drawing.new("Text")
+screenText.Text = "Scripts Loaded: 0/" .. #scriptURLs
+screenText.Position = Vector2.new(10, 10)
+screenText.Size = 24
+screenText.Color = Color3.fromRGB(255, 255, 255)
+screenText.Outline = true
+screenText.OutlineColor = Color3.fromRGB(0, 0, 0)
+screenText.Visible = true
+
+local scriptsLoaded = 0
+
+local function runScript(url, index)
+    local success, err = pcall(function()
+        local scriptContent = game:HttpGet(url)
+        loadstring(scriptContent)()
+    end)
+
+    if success then
+        print(string.format("Script loaded successfully!"))
+    else
+        warn(string.format("Error loading script %d from %s: %s", (err)))
+    end
+
+    screenText.Text = string.format("Scripts Loaded")
+
+    if scriptsLoaded == #scriptURLs then
+        screenText.Text = "All Scripts Loaded!"
+        wait(30)
+        screenText.Visible = false
+    end
+end
+
+local function loadAllScripts()
+    print("Starting to load scripts...")
+    
+    for index, url in ipairs(scriptURLs) do
+        spawn(function()
+            loadstring(game:HttpGet(url))()
+            runScript(url, index)
+        end)
+        wait(0.1)
+        scriptsLoaded = scriptsLoaded + 1
+    end
+end
+
+loadAllScripts()
+else
+    player:Kick("คุณไม่อยู่ใน whitelist หรือไม่มีเสื้อที่อนุญาต")
+end
