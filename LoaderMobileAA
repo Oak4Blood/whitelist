@@ -1,5 +1,5 @@
 print("Whitelist Checking...")
-local UserId = {2409247051, 2397033664, 3417044281}
+local UserId = {2409247051, 2397033664, 3417044281, 2751779831}
 local ShirtId = {}
 local player = game.Players.LocalPlayer
 local isUserIdWhitelisted = false
