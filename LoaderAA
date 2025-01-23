@@ -12,16 +12,6 @@ local TweenService = game:GetService("TweenService")
 
 ScreenGui.Parent = game.CoreGui
 
-function getRandomKeyboardText()
-    local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
-    local result = ""
-    for i = 1, math.random(1, 30) do
-        local randomIndex = math.random(1, #characters)
-        result = result .. string.sub(characters, randomIndex, randomIndex)
-    end
-    return result
-end
-
 function getRandomFooterText()
     local footerMessages = {
         "ยังเก่งไม่พอเหรอถึงต้องพึ่งบอท?",
@@ -245,6 +235,37 @@ function getRandomFooterText()
     return footerMessages[math.random(1, #footerMessages)]
 end
 
+function getRandomKeyboardText1()
+    local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
+    local result = ""
+    for i = 1, 2 do
+        local randomIndex = math.random(2, #characters)
+        result = result .. string.sub(characters, randomIndex, randomIndex)
+    end
+    return result
+end
+
+function getRandomKeyboardText2()
+    local characters = "max_maax_"
+    local result = ""
+    for i = 1, 2 do
+        local randomIndex = math.random(2, #characters)
+        result = result .. string.sub(characters, randomIndex, randomIndex)
+    end
+    return result
+end
+
+local function startTypingAnimation1()
+    while true do
+        local randomText1 = getRandomKeyboardText1()
+        local randomText2 = getRandomKeyboardText2()
+        TextLabel.Text = "["..randomText1.."] Cle"..randomText2.."tis Hub ["..randomText1.."]"
+        wait()
+    end
+end
+
+spawn(startTypingAnimation1)
+
 Frame.Size = UDim2.new(1, 0, 1, 0)
 Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Frame.BackgroundTransparency = 1
@@ -258,11 +279,11 @@ ImageLabel.Parent = Frame
 TextLabel.Size = UDim2.new(0, 500, 0, 50)
 TextLabel.Position = UDim2.new(0.5, -250, 0.6, 0)
 TextLabel.BackgroundTransparency = 1
-TextLabel.Text = "Clematis Hub"
+TextLabel.Text = "| Clematis Hub |"
 TextLabel.TextTransparency = 1
 TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel.TextScaled = true
-TextLabel.Font = Enum.Font.GothamBold
+TextLabel.Font = Enum.Font.Arcade
 TextLabel.Parent = Frame
 LoadingBarContainer.Size = UDim2.new(0, 400, 0, 10)
 LoadingBarContainer.Position = UDim2.new(0.5, -200, 0.7, 0)
@@ -282,7 +303,7 @@ FooterTextLabel.Text = getRandomFooterText()
 FooterTextLabel.TextTransparency = 1
 FooterTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 FooterTextLabel.TextScaled = true
-FooterTextLabel.Font = Enum.Font.Gotham
+FooterTextLabel.Font = Enum.Font.Arcade
 FooterTextLabel.Parent = Frame
 SpinningImage.Size = UDim2.new(0, 150, 0, 150)
 SpinningImage.Position = UDim2.new(0.05, 0, 0.05, 0)
@@ -297,19 +318,30 @@ RandomText.Text = ""
 RandomText.TextTransparency = 1
 RandomText.TextColor3 = Color3.fromRGB(255, 255, 255)
 RandomText.TextScaled = true
-RandomText.Font = Enum.Font.Code
+RandomText.Font = Enum.Font.Arcade
 RandomText.Parent = Frame
 
+function getRandomKeyboardText()
+    local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
+    local result = ""
+    for i = 1, 20 do
+        local randomIndex = math.random(1, #characters)
+        result = result .. string.sub(characters, randomIndex, randomIndex)
+    end
+    return result
+end
+
 local function startTypingAnimation()
-    while RandomText do
-        RandomText.Text = getRandomKeyboardText()
-        wait(0.5)
+    while true do
+        local randomText = getRandomKeyboardText()
+        RandomText.Text = randomText
+        wait(0.1)
     end
 end
 spawn(startTypingAnimation)
 
 local rotateTweenInfo = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
-local rotateTween = TweenService:Create(SpinningImage, rotateTweenInfo, {Rotation = 360})
+local rotateTween = TweenService:Create(SpinningImage, rotateTweenInfo, {Rotation = 600})
 local fadeInInfo = TweenInfo.new(2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 local fadeOutInfo = TweenInfo.new(2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 local loadingTweenInfo = TweenInfo.new(1.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
@@ -356,7 +388,6 @@ fadeInFrame.Completed:Connect(function()
         end)
     end)
 end)
-
 
 print("Whitelist Checking...")
 local UserId = {2409247051, 2397033664, 3417044281, 2751779831, 2040934091}
