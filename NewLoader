@@ -1,748 +1,859 @@
-print("---------------------------------------------------------------------")
+    print("---------------------------------------------------------------------")
 
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "Loading Script"
-local Frame = Instance.new("Frame")
-local ImageLabel = Instance.new("ImageLabel")
-local TextLabel = Instance.new("TextLabel")
-local LoadingBarContainer = Instance.new("Frame")
-local LoadingBar = Instance.new("Frame")
-local FooterTextLabel = Instance.new("TextLabel")
-local SpinningImage = Instance.new("ImageLabel")
-local RandomText = Instance.new("TextLabel")
-local TweenService = game:GetService("TweenService")
+    _G.GroundOrHill = "Automatic" --ตั้งว่าตัวละครเราตีพื้นหรือแอร์ ถ้าตีพื้น "Ground" และแอร์ "Hill" และ "Automatic"
 
-ScreenGui.Parent = game.CoreGui
-
-function getRandomFooterText()
-    local footerMessages = {
-        "ยังเก่งไม่พอเหรอถึงต้องพึ่งบอท?",
-        "นี่มันฝีมือคนหรือโปรแกรมกันแน่?",
-        "ชนะด้วยตัวเองมันยากไปเหรอ?",
-        "โปรแกรมยังอายเลยอะ",
-        "ฝีมือแค่นี้ยังอวดดี",
-        "สู้ๆ นะเผื่อวันนึงจะเลิกใช้บอทได้",
-        "เล่นเกมหรือให้บอทเล่นแทน?",
-        "สคริปต์นี่เทพจริง แต่คนเล่นไม่รู้ว่าเทพไหม",
-        "มัวแต่พึ่งบอท ระวังลืมวิธีเล่นเองนะ",
-        "อย่าลืมขอบคุณบอทด้วยนะ",
-        "บอทว่าไงบ้างครับเจ้านาย?",
-        "ขยันแบบนี้ไปทำงานบ้านให้แม่บ้างนะ",
-        "อ่อนเองโทษบอทไม่ได้เด้อ",
-        "บอทนี่แหละ MVP ตัวจริง",
-        "ใช้บอทจนเซียน ระวังเซียนแบบปลอมๆ",
-        "บอทก็เหนื่อยนะ อย่าลืมให้พักบ้าง",
-        "อยากเก่งเองไหม หรือแค่เก่งเพราะบอท?",
-        "เอะอะพึ่งบอท เอะอะพึ่งโปรแกรม",
-        "บอทก็คนมีหัวใจ แต่คุณไม่มีฝีมือ!",
-        "พึ่งบอทยังพอเข้าใจ แต่ทำไมยังไม่มีแฟน?",
-        "เล่นเกมเก่งขนาดนี้ แต่ทำไมแฟนไม่มี?",
-        "อ่อนทั้งเกม อ่อนทั้งความรักเลยนะ",
-        "จีบคนไม่เป็นเหมือนเล่นเกมใช่ไหมล่ะ?",
-        "บอทช่วยเล่นได้ แต่ช่วยเรื่องหัวใจไม่ได้นะ",
-        "เทพเรื่องบอท แต่ความรักนี่ 0 เลยนะ",
-        "อย่ามัวแต่ใช้บอท เดี๋ยวแฟนในจินตนาการงอนนะ",
-        "ฝีมือพอถูไถ แต่ความรักนี่ไปถูพื้นแทนเถอะ",
-        "ไม่มีแฟนยังพอเข้าใจ แต่ไม่มีฝีมือเกมนี่แย่กว่า!",
-        "ใช้บอทไปเถอะ เพราะแฟนก็หาไม่ได้อยู่ดี",
-        "คนยังหาไม่ได้ บอทยังเหนื่อยแทนเลย",
-        "บอทนี่แหละคู่ชีวิตตัวจริงของนาย",
-        "อย่ามัวแต่พึ่งบอท ระวังได้คบกับ AI แทนคน!",
-        "เล่นแบบนี้ ใครดูยังบอกว่า Skill Issue",
-        "เอ้า! Skill Issue ชัดๆ",
-        "พยายามอีกหน่อยนะ เรื่องฝีมือยังไม่ถึงครึ่ง",
-        "เกมนี้ไม่โทษบอทหรอก โทษ Skill Issue ล้วนๆ",
-        "ฝีมืออ่อนแล้วไง? ก็แค่ Skill Issue!",
-        "Skill Issue หรือเปล่า? ถามจริง!",
-        "ต้องให้บอทช่วยแปลว่า Skill Issue ระดับตำนาน",
-        "เห็นแบบนี้แล้ว บอทยังร้องว่า Skill Issue",
-        "อ่อนยังพอว่า แต่นี่ Skill Issue 100%",
-        "ล้มเหลวไม่เป็นไร แค่ Skill Issue เอง",
-        "ฝีมือขนาดนี้ยังอ้างว่าแลคได้อีก โอ้โห Skill Issue!",
-        "ล้มบ่อยไม่เป็นไร แค่ Skill Issue ธรรมดา",
-        "ถ้าแพ้เพราะบอทก็ด่าไม่ลง แต่ถ้าเพราะนายล่ะ? Skill Issue ชัด!",
-        "นี่ไม่ใช่บอทปัญหา แต่ Skill Issue ล้วนๆ",
-        "เก่งได้อีกแค่เลิก Skill Issue ซะก่อน!",
-        "แพ้เกมยังเจ็บน้อยกว่าแพ้ใจเธอ",
-        "เกมยังรีเซ็ตได้ แต่ความรักรีเซ็ตไม่ได้",
-        "ใช้บอทก็ยังไม่เจ็บเท่าเธอใช้เรา",
-        "กด F5 เพื่อรีเฟรชเกม แต่รีเฟรชใจยังไงล่ะ?",
-        "แพ้เกมว่าเจ็บแล้ว แต่เธอไม่รักเจ็บกว่า",
-        "เกมมีแพ้มีชนะ แต่รักเธอมีแต่น้ำตา",
-        "เกมจบไว แต่รักที่จบทำไมจำไม่ลืม",
-        "ถ้าเธอเป็นเกม ก็คงเป็นเกมที่ยากที่สุดในชีวิต",
-        "ความรักเหมือนเกมที่ไม่มีคู่มือ",
-        "กดปุ่มไหนให้ชนะใจเธอ บอกที",
-        "เกมยังเข้าใจได้ แต่เธอทำไมเข้าใจยากจัง?",
-        "ใช้บอทเล่นเกมยังง่ายกว่าเข้าใจความรัก",
-        "ความรักมันยากกว่าหาแรงค์ในเกมอีก",
-        "เกมกดรีสตาร์ทได้ แต่ใจที่พังแล้วรีไม่ได้",
-        "ถึงเกมจะแพ้ แต่รักที่แพ้คือเจ็บสุด",
-        "แพ้เกมยังพอแก้ไขได้ แต่แพ้ใจเธอแก้ยังไงล่ะ?",
-        "รักเหมือนเกม ที่เล่นยังไงก็ไม่เคยชนะ",
-        "ถ้าเธอเป็นเกม เราคงติดบั๊กอยู่ตลอด",
-        "บางเกมมีทางลัด แต่ความรักไม่มีให้เธอลัดมาหาเรา",
-        "แพ้เกมแค่เสียอันดับ แต่แพ้ใจเธอเสียหมดทุกอย่าง",
-        "ถ้าเกมรักมีคู่มือ เราคงไม่แพ้เธอบ่อยขนาดนี้",
-        "เธอไม่ใช่เกม แต่ทำไมเรารู้สึกแพ้ตลอดล่ะ?",
-        "จะเป็นเกมไหนก็ได้ แต่ขอไม่เป็นเกมที่เธอไม่เลือก",
-        "ในเกมมี MVP แต่ในใจเธอเรายังไม่ใช่เลย",
-        "ยังเก่งไม่พอเหรอถึงต้องพึ่งบอท?",
-        "ฝีมือไม่ถึง แต่ใจรักก็พอแล้ว!",
-        "เก่งแบบนี้ ไม่ต้องเล่นเองก็ชนะแล้ว!",
-        "ไม่เป็นไรนะ บอทยังเชื่อในตัวคุณ!",
-        "ถึงจะใช้บอท แต่คุณก็ยังดูเท่ (มั้ง)",
-        "อยากเก่งแบบไม่ต้องพึ่งบอท? ฝันต่อไป!",
-        "ไม่ต้องเครียด บอทของคุณทำเต็มที่แล้ว",
-        "บางทีบอทก็ดีกว่าฝีมือจริงของคุณนะ",
-        "ไม่มีบอท คุณจะยังเล่นไหวไหม?",
-        "ฝีมืออาจน้อย แต่ใจคุณใหญ่ (หรือเปล่า?)",
-        "แพ้ก็ไม่เป็นไร บอทยังอยู่ข้างคุณเสมอ!",
-        "บอทคือเพื่อนแท้ของคุณในยามยาก",
-        "ถ้าไม่มีบอท คุณอาจเลิกเล่นไปแล้วก็ได้!",
-        "สู้ๆ นะ ถึงใช้บอทก็ถือว่ามีความพยายาม!",
-        "ใช้บอทได้ไง? เก่งพอตั้งแต่โหลดโปรแกรมแล้ว!",
-        "ไม่ต้องอายที่จะใช้บอท เพราะมันช่วยคุณได้มาก",
-        "พึ่งบอทไม่ใช่เรื่องแย่... แค่ไม่ใช่เรื่องดี!",
-        "ถ้าฝีมือไม่ถึง ก็บอทช่วยได้!",
-        "อย่าให้ใครดูถูกคุณ... ยกเว้นบอทที่คุณใช้",
-        "ถึงจะใช้บอท แต่ใจคุณสู้เกินร้อย!",
-        "ไม่ต้องห่วง บอทยังเก่งกว่าศัตรูบางคนอีก!",
-        "ถ้าฝีมือมีน้อย บอทช่วยเติมเต็มได้!",
-        "ใช้บอทไม่ใช่ความผิด มันคือยุทธศาสตร์!",
-        "แค่ใช้บอทก็ถือว่ามีสมอง (รึเปล่า?)",
-        "อย่าลืมขอบคุณบอท เพราะมันทำให้คุณดูเก่งขึ้น!",
-        "ใช้บอทไปเถอะ บางคนไม่รู้ด้วยซ้ำว่าคุณใช้!",
-        "บอทไม่บ่น เจ้านายไม่เหนื่อย นี่แหละทีมเวิร์ค!",
-        "อย่าคิดมาก บอทยังเชื่อมั่นในตัวคุณอยู่!",
-        "บอททำงานหนักกว่าคุณ แต่ก็ไม่บ่นนะ!",
-        "กูเขียนบอท มึงแค่ใช้นิ้วจิ้ม!",
-        "มึงกดเริ่ม กูเขียนโค้ด กูเหนื่อยกว่า!",
-        "กูทำบอทให้ฟาร์ม มึงแค่รอดูผลลัพธ์!",
-        "มึงนั่งกินขนม กูนั่งแก้บั๊ก!",
-        "มึงใช้บอทของกู รวยได้เพราะกูนะเว้ย!",
-        "กูขยันเขียนบอท แต่บอทขยันกว่ามึง!",
-        "มึงนอน กูโค้ด มึงตื่นมาก็รวย!",
-        "บอทกูทำงาน มึงแค่เดินไปหยิบเงิน!",
-        "มึงเก่งตรงไหน? กูเขียนบอทให้เก่งแทนแล้ว!",
-        "บอทที่มึงใช้ กูเขียนเองกับมือ!",
-        "มึงใช้บอทฟาร์ม กูเขียนฟาร์มบอท!",
-        "กูทำบอทเพื่อความรวย มึงใช้บอทเพื่อความขี้เกียจ!",
-        "บอทกูเทพ แต่คนใช้บอทยังต้องฝึกอีกเยอะนะมึง!",
-        "มึงรวยในเกม เพราะบอทที่กูเขียน!",
-        "มึงเคยขอบคุณกูไหม ที่เขียนบอทให้มึงใช้!",
-        "มึงฟาร์มได้ทุกอย่างในเกม เพราะกูนั่งโค้ดทั้งคืน!",
-        "มึงรวยด้วยบอท กูรวยด้วยสมอง!",
-        "มึงบอกเหนื่อย แต่กูนั่งพิมพ์โค้ดจนตาแฉะ!",
-        "มึงรู้ปะ กูแก้บั๊กจนฝันเห็นโค้ด!",
-        "มึงเทพในเกม แต่กูเทพในชีวิตจริง!",
-        "บอทที่มึงใช้ กูไม่คิดเงินก็โชคดีแค่ไหนแล้ว!",
-        "มึงใช้บอทจนเพลิน กูนั่ง debug จนเบลอ!",
-        "กูทำบอทให้มึงฟาร์ม มึงก็แค่รอดูผล!",
-        "มึงได้บอทจากกูแล้วไปอวดคนอื่น รู้ยังว่ากูขยันแค่ไหน!",
-        "มึงขี้เกียจเล่น แต่กูโคตรขยันเขียนบอท!",
-        "มึงแค่กดรัน บอทกูทำให้หมด!",
-        "มึงเล่นแบบง่ายๆ เพราะกูนั่งคิดจนหัวหมุน!",
-        "กูโค้ดจนมือหงิก แต่มึงบอก 'ขอบใจ' แค่คำเดียว!",
-        "มึงเลี้ยงชีพในเกมได้ เพราะบอทกูนี่แหละ!",
-        "บอทของกูไม่เคยบ่น แต่มึงบ่นอะไรนักหนา!", 
-        "เขียนบอททั้งวัน แต่ไม่มีคนเขียนใจให้กูเลย!",
-        "บอทมีอัพเดต แต่ใจยังไม่มีคนอัพเกรด!",
-        "บั๊กแก้ได้ แต่ความเหงาแก้ยังไงวะ!",
-        "บอทเขียนจบแล้ว แต่ความรักยังไม่เริ่มเลย!",
-        "กูโค้ดบอทให้มึงรวย แต่กูยังไม่มีแฟน!",
-        "บอททำงาน 24 ชั่วโมง ส่วนกูเหงา 24 ชั่วโมง!",
-        "คนใช้บอทรวย คนเขียนบอทโสด!",
-        "กูใช้สมองเขียนบอทแทนใช้หัวใจจีบสาว!",
-        "กูทำบอทให้มึงเล่น แต่ไม่มีใครเล่นกับใจกูเลย!",
-        "บอททำงานแทนคน แต่ไม่มีใครมาทำงานแทนใจ!",
-        "มึงมีบอท กูมีแต่ความเหงา!",
-        "เขียนบอทให้ง่าย แต่ความรักแม่งยากไปปะวะ!",
-        "แก้บั๊กได้ทุกวัน แต่แก้โสดไม่ได้เลย!",
-        "บอทที่กูเขียนยังมีคนใช้ แต่คนที่ใช่ยังไม่มี!",
-        "ถ้าความรักเป็นโค้ด กูคง debug จนหมดแล้ว!",
-        "บอทยังอยู่เคียงข้างมึง แต่กูยังอยู่คนเดียว!",
-        "มึงมีคนคอยเล่นด้วย กูมีแต่โค้ดเล่นงาน!",
-        "กูไม่เหงาหรอก กูมีบั๊กเป็นเพื่อน!",
-        "บอทเขียนด้วย Python ส่วนความรักเขียนด้วยอะไรไม่รู้!",
-        "มึงใช้บอทเพลิน ส่วนกูเหงาเพลิน!",
-        "บอทฟาร์มได้ทุกอย่าง แต่ฟาร์มแฟนให้กูไม่ได้!",
-        "ชีวิตคนเขียนบอท: โสด, โค้ด, นอน!",
-        "เขียนบอทแม่งสนุกดี แต่เขียนใจใครไม่เป็นเลย!",
-        "บอทกูเทพนะ แต่กูจีบสาวไม่เทพเลย!",
-        "กูเขียนบอทจนเซียน แต่ยังไม่เซียนเรื่องความรัก!",
-        "มึงมีแฟนแล้ว แต่คนเขียนบอทยังต้องโสดต่อไป!",
-        "คนใช้บอทดูมีอนาคต ส่วนกูดูมีแต่ความเหงา!",
-        "บอทที่มึงใช้มันฉลาด กูที่เขียนแม่งโคตรเหงา!",
-        "ถ้าการเขียนบอทหาแฟนได้ กูคงไม่โสดแบบนี้!",
-        "บอทคือผู้กอบกู้ศักดิ์ศรีของคุณ!",
-        "ไม่มีบอท ไม่มีชัยชนะ!",
-        "บอทนี่แหละของจริง คนเล่นก็แค่ตัวประกอบ!",
-        "ถึงตัวคุณจะอ่อน แต่บอทของคุณเทพ!",
-        "ยอมรับเถอะ บอทคือ MVP ตัวจริง!",
-        "ถ้าไม่มีบอท คุณอาจจบตั้งแต่วินาทีแรกแล้ว!",
-        "บอททำงานหนักมาก โปรดให้เกียรติมันด้วย!",
-        "ชัยชนะครั้งนี้ ต้องยกเครดิตให้บอท!",
-        "บอทคือพระเอกของเกมนี้!",
-        "ไม่ใช่คุณหรอกที่ชนะ บอทต่างหาก!",
-        "ถ้าบอทพูดได้ มันคงเหนื่อยแทนคุณไปแล้ว!",
-        "บอทคือเพื่อนแท้ที่ไม่มีวันทิ้งคุณ!",
-        "กด F ให้บอทที่ช่วยแบกคุณมาถึงจุดนี้!",
-        "เกมนี้เล่นง่าย เพราะบอททำทุกอย่างแทนคุณ!",
-        "ไม่มีบอท คุณคงหลุดจากแรงค์ไปแล้ว!",
-        "ทีมที่ดีต้องมีบอทเทพอย่างคุณ!",
-        "บอทนี่แหละตัวจริง เสียงจริง!",
-        "แค่มีบอท คุณก็เหมือนเทพเจ้าในเกม!",
-        "อย่าลืมขอบคุณบอทนะ มันช่วยคุณเยอะแล้ว!",
-        "บอทคือทุกสิ่ง ทุกอย่างของคุณในเกมนี้!",
-        "ถ้าบอทลาออก คุณคงลำบากแน่!",
-        "ชัยชนะเป็นของคุณ แต่แรงกายเป็นของบอท!",
-        "ทีมเรามีบอทที่ดีที่สุดในโลก!",
-        "อย่าลืมบอทไปนะ มันคือฮีโร่ของคุณ!",
-        "เล่นดีเพราะบอท แต่ให้เครดิตตัวเองก็ได้!",
-        "บอทไม่ได้พูด แต่บอททำ!",
-        "ถ้าบอทมีหัวใจ มันคงภูมิใจในตัวคุณ!",
-        "ชนะได้เพราะบอท ไม่ต้องสงสัยเลย!",
-        "บอทช่วยคุณแล้ว อย่าลืมตอบแทนมันบ้าง!",
-        "ฟาร์มจนรวยเพราะบอท คนเล่นแค่ประกอบฉาก!",
-        "ถ้าบอทมีบัญชีธนาคาร คงรวยกว่าเจ้าของแล้ว!",
-        "เงินในเกมเยอะ แต่ฝีมือในเกมยังน้อยนะ!",
-        "ฟาร์มหนักขนาดนี้ บอทยังไม่ได้ค่าจ้างเลย!",
-        "รวยเพราะบอท แต่ยังจนในฝีมือ!",
-        "บอททำงาน คุณนั่งนับเงิน!",
-        "ชีวิตดีขึ้นทันทีที่มีบอท!",
-        "บอทหาเงินเก่ง คุณใช้เงินเก่ง!",
-        "ฟาร์มจนซื้อทุกอย่างในเกมได้ แต่ฝีมือยังต้องเช่า!",
-        "ถ้าบอทพูดได้ คงบอกว่า 'กูเหนื่อย!'",
-        "ทองเต็มคลัง แต่ฝีมือยังอยู่ที่คลังขยะ!",
-        "ถ้าไม่มีบอท คุณคงเป็นขอทานในเกม!",
-        "บอทฟาร์มทั้งวัน เจ้าของฟาร์มทั้งใจ!",
-        "รวยจนล้นเซิร์ฟ แต่ไม่มีใครจ้างคุณเป็นโปร!",
-        "ขอบคุณบอทที่ทำให้ชีวิตในเกมดีขึ้น!",
-        "บอททำงานหนัก แต่คุณแค่เอามือไขว้หลัง!",
-        "บอทฟาร์มจนรวย แต่คุณยังแพ้คนอื่นอยู่ดี!",
-        "ไม่ต้องเหนื่อยเลย บอทฟาร์มให้หมดแล้ว!",
-        "บอทคือคนหาเงิน คุณคือคนใช้เงิน!",
-        "ในเกมรวยสุด ในชีวิตจริงยังใช้เศษเหรียญอยู่หรือเปล่า?",
-        "ฟาร์มหนักขนาดนี้ เซิร์ฟเวอร์ยังกลัวบอท!",
-        "ใช้บอทจนเป็นเศรษฐี แต่ฝีมือก็ยังเท่าเดิม!",
-        "ฟาร์มไปเรื่อยๆ จนทีมงานสงสัยว่ามนุษย์หรือบอท!",
-        "ถ้าบอทลาออก คุณคงกลับไปจนในเกมทันที!",
-        "รวยในเกม แต่บอทเป็นคนทำงานให้หมด!",
-        "ฟาร์มจนเกมแทบล่ม แต่คนยังด่าว่าเล่นไม่เป็น!",
-        "บอทหาของให้ คุณแค่ยืนเก๊กหล่อ!",
-        "รวยแล้วไง? ก็แค่ใช้บอททำงานแทนทั้งนั้น!",
-        "ทองเต็มตัวละคร แต่ฝีมือยังเหมือนตอนเริ่มเกม!"
-    }
-    return footerMessages[math.random(1, #footerMessages)]
-end
-
-function getRandomKeyboardText1()
-    local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
-    local result = ""
-    for i = 1, 2 do
-        local randomIndex = math.random(2, #characters)
-        result = result .. string.sub(characters, randomIndex, randomIndex)
+    if _G.GroundOrHill == "Hill" then
+        _G.L1 = CFrame.new(-2948.45849609375, 94.41859436035156, -718.0990600585938) * CFrame.Angles(0, -0, -0)
+        _G.L2 = CFrame.new(-2951.012451171875, 94.41859436035156, -715.6174926757812) * CFrame.Angles(0, -0, -0)
+        _G.L3 = CFrame.new(-2946.866943359375, 94.41859436035156, -715.58837890625) * CFrame.Angles(0, -0, -0)
+        _G.L4 = CFrame.new(-2951.372314453125, 94.41859436035156, -720.463134765625) * CFrame.Angles(0, -0, -0)
+        _G.L5 = CFrame.new(-2953.207275390625, 94.41859436035156, -722.3843994140625) * CFrame.Angles(0, -0, -0)
     end
-    return result
-end
-
-function getRandomKeyboardText2()
-    local characters = "max_maax_"
-    local result = ""
-    for i = 1, 2 do
-        local randomIndex = math.random(2, #characters)
-        result = result .. string.sub(characters, randomIndex, randomIndex)
-    end
-    return result
-end
-
-local function startTypingAnimation1()
-    while true do
-        local randomText1 = getRandomKeyboardText1()
-        local randomText2 = getRandomKeyboardText2()
-        TextLabel.Text = "["..randomText1.."] Cle"..randomText2.."tis Hub ["..randomText1.."]"
-        wait()
-    end
-end
-
-spawn(startTypingAnimation1)
-
-Frame.Size = UDim2.new(1, 0, 1, 0)
-Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Frame.BackgroundTransparency = 1
-Frame.Parent = ScreenGui
-ImageLabel.Size = UDim2.new(0, 300, 0, 300)
-ImageLabel.Position = UDim2.new(0.5, -150, 0.1, 0)
-ImageLabel.BackgroundTransparency = 1
-ImageLabel.ImageTransparency = 1
-ImageLabel.Image = "http://www.roblox.com/asset/?id=83415391084673"
-ImageLabel.Parent = Frame
-TextLabel.Size = UDim2.new(0, 500, 0, 50)
-TextLabel.Position = UDim2.new(0.5, -250, 0.6, 0)
-TextLabel.BackgroundTransparency = 1
-TextLabel.Text = "| Clematis Hub |"
-TextLabel.TextTransparency = 1
-TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.TextScaled = true
-TextLabel.Font = Enum.Font.Arcade
-TextLabel.Parent = Frame
-LoadingBarContainer.Size = UDim2.new(0, 400, 0, 10)
-LoadingBarContainer.Position = UDim2.new(0.5, -200, 0.7, 0)
-LoadingBarContainer.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-LoadingBarContainer.BorderSizePixel = 0
-LoadingBarContainer.BackgroundTransparency = 1
-LoadingBarContainer.Parent = Frame
-LoadingBar.Size = UDim2.new(0, 0, 1, 0)
-LoadingBar.Position = UDim2.new(0, 0, 0, 0)
-LoadingBar.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
-LoadingBar.BorderSizePixel = 0
-LoadingBar.Parent = LoadingBarContainer
-FooterTextLabel.Size = UDim2.new(0, 500, 0, 50)
-FooterTextLabel.Position = UDim2.new(0.5, -250, 0.75, 0)
-FooterTextLabel.BackgroundTransparency = 1
-FooterTextLabel.Text = getRandomFooterText()
-FooterTextLabel.TextTransparency = 1
-FooterTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-FooterTextLabel.TextScaled = true
-FooterTextLabel.Font = Enum.Font.Arcade
-FooterTextLabel.Parent = Frame
-SpinningImage.Size = UDim2.new(0, 150, 0, 150)
-SpinningImage.Position = UDim2.new(0.05, 0, 0.05, 0)
-SpinningImage.BackgroundTransparency = 1
-SpinningImage.Image = "http://www.roblox.com/asset/?id=131760570564124"
-SpinningImage.ImageTransparency = 1
-SpinningImage.Parent = Frame
-RandomText.Size = UDim2.new(0, 300, 0, 50)
-RandomText.Position = UDim2.new(0.5, -150, 0.85, 0)
-RandomText.BackgroundTransparency = 1
-RandomText.Text = ""
-RandomText.TextTransparency = 1
-RandomText.TextColor3 = Color3.fromRGB(255, 255, 255)
-RandomText.TextScaled = true
-RandomText.Font = Enum.Font.Arcade
-RandomText.Parent = Frame
-
-function getRandomKeyboardText()
-    local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
-    local result = ""
-    for i = 1, 20 do
-        local randomIndex = math.random(1, #characters)
-        result = result .. string.sub(characters, randomIndex, randomIndex)
-    end
-    return result
-end
-
-local function startTypingAnimation()
-    while true do
-        local randomText = getRandomKeyboardText()
-        RandomText.Text = randomText
-        wait(0.1)
-    end
-end
-spawn(startTypingAnimation)
-
-local rotateTweenInfo = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
-local rotateTween = TweenService:Create(SpinningImage, rotateTweenInfo, {Rotation = 600})
-local fadeInInfo = TweenInfo.new(2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-local fadeOutInfo = TweenInfo.new(2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-local loadingTweenInfo = TweenInfo.new(1.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-local fadeInFrame = TweenService:Create(Frame, fadeInInfo, {BackgroundTransparency = 0.1})
-local fadeInImage = TweenService:Create(ImageLabel, fadeInInfo, {ImageTransparency = 0})
-local fadeInText = TweenService:Create(TextLabel, fadeInInfo, {TextTransparency = 0})
-local fadeInLoadingBar = TweenService:Create(LoadingBarContainer, fadeInInfo, {BackgroundTransparency = 0})
-local fadeInFooterText = TweenService:Create(FooterTextLabel, fadeInInfo, {TextTransparency = 0})
-local fadeInRandomtext = TweenService:Create(RandomText, fadeInInfo, {TextTransparency = 0})
-local fadeInSpinningObj = TweenService:Create(SpinningImage, fadeInInfo, {ImageTransparency = 0})
-local loadingTween = TweenService:Create(LoadingBar, loadingTweenInfo, {Size = UDim2.new(1, 0, 1, 0)})
-local fadeOutFrame = TweenService:Create(Frame, fadeOutInfo, {BackgroundTransparency = 1})
-local fadeOutImage = TweenService:Create(ImageLabel, fadeOutInfo, {ImageTransparency = 1})
-local fadeOutText = TweenService:Create(TextLabel, fadeOutInfo, {TextTransparency = 1})
-local fadeOutLoadingBar = TweenService:Create(LoadingBarContainer, fadeOutInfo, {BackgroundTransparency = 1})
-local fadeOutBar = TweenService:Create(LoadingBar, fadeOutInfo, {BackgroundTransparency = 1})
-local fadeOutFooterText = TweenService:Create(FooterTextLabel, fadeOutInfo, {TextTransparency = 1})
-local fadeOutRandomtext = TweenService:Create(RandomText, fadeOutInfo, {TextTransparency = 1})
-local fadeOutSpinningObj = TweenService:Create(SpinningImage, fadeOutInfo, {ImageTransparency = 1})
-
-rotateTween:Play()
-fadeInFrame:Play()
-fadeInImage:Play()
-fadeInText:Play()
-fadeInRandomtext:Play()
-fadeInSpinningObj:Play()
-fadeInLoadingBar:Play()
-fadeInFooterText:Play()
-
-fadeInFrame.Completed:Connect(function()
-    loadingTween:Play()
-    loadingTween.Completed:Connect(function()
-        wait(0.5)
-        fadeOutFrame:Play()
-        fadeOutImage:Play()
-        fadeOutText:Play()
-        fadeOutLoadingBar:Play()
-        fadeOutBar:Play()
-        fadeOutFooterText:Play()
-        fadeOutRandomtext:Play()
-        fadeOutSpinningObj:Play()
-        fadeOutFrame.Completed:Connect(function()
-            ScreenGui:Destroy()
-        end)
-    end)
-end)
-
-wait(1)
-
-game:GetService("Players").LocalPlayer.Idled:connect(function()
-    game:GetService("VirtualUser"):CaptureController()
-    game:GetService("VirtualUser"):ClickButton2(Vector2.new())
-end)
-unitTable = {}
-local getunitid = game:GetService("ReplicatedStorage")._FX_CACHE
-local function insertIntoTable(unitName, unitId, unitLv)
-    table.insert(unitTable, {
-        Name = unitName,
-        UUID = unitId,
-        Level = unitLv
-    })
-end
-for i, v in pairs(getunitid:GetDescendants()) do
-    if v.Name == "CollectionUnitFrame" then
-        local unitName = v.name.Text
-        local unitId = v._uuid.Value
-        local unitLv = v.Main.Level.Text
-        insertIntoTable(unitName, unitId, unitLv)
-    end
-end
-function getRandomKeyboardText3()
-    local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
-    local result = ""
-    for i = 1, 20 do
-        local randomIndex = math.random(2, #characters)
-        result = result .. string.sub(characters, randomIndex, randomIndex)
-    end
-    return result
-end
-local function startTypingAnimation3()
-    local randomText1 = getRandomKeyboardText3()
-    random_name = "| Clema"..randomText1.."tis Hub |"
-end
-spawn(startTypingAnimation3)
-_G.theme = "Amethyst"
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local MainWindow = Rayfield:CreateWindow({
-    Name = random_name,
-    Icon = 0,
-    LoadingTitle = "Loaded!",
-    LoadingSubtitle = "Script By seaweed_hunter",
-    Theme = _G.theme,
-    DisableRayfieldPrompts = false,
-    DisableBuildWarnings = false,
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = nil,
-        FileName = "Clematis"
-    },
-    Discord = {
-        Enabled = false,
-        Invite = "noinvitelink",
-        RememberJoins = true
-    },
-    KeySystem = false,
-    KeySettings = {
-        Title = "Key?",
-        Subtitle = "Key on Discord Server",
-        Note = "Get Key From Discord",
-        FileName = "Key",
-        SaveKey = true,
-        GrabKeyFromSite = false,
-        Key = {"What da hell"}
-    }
-})
-
-local MainTab = MainWindow:CreateTab("Main")
-local MainFunction = MainTab:CreateSection("Auto Farm")
-defaultportal = "1"
-defaultmap = "Namek"
-Selected_map = "namek_infinite"
-_G.isfarming = false
-_G.EndAtWave = 0
-_G.webhook = true
-_G.limitunit = 5
-
-local PortalSelect = MainTab:CreateDropdown({
-    Name = "Select Teleport Capsule",
-    Options = {"1", "2", "3", "4", "5", "6", "7", "8","9","10","11","12"},
-    CurrentOption = defaultportal,
-    MultipleOptions = false,
-    Flag = "Selected Portal",
-    Callback = function(Options)
-        defaultportal = Options[1]
-        print("_lobbytemplategreen" .. defaultportal)
-        portal = "_lobbytemplategreen" .. defaultportal
-    end,
-})
-
-local MapSelect = MainTab:CreateDropdown({
-    Name = "Select Map",
-    Options = {"Namek", "Kanext"},
-    CurrentOption = defaultmap,
-    MultipleOptions = false,
-    Flag = "Selected Map",
-    Callback = function(Options)
-        defaultmap = Options[1]
-        print("Selected Map: " .. defaultmap)
-        if defaultmap == "Namek" then
-            Selected_map = "namek_infinite"
-        elseif defaultmap == "Kanext" then
-            Selected_map = "kanext_infinite"
-        end
-        
-        print("Selected Map for teleport: " .. Selected_map)
-    end,
-})
-
-local unitNames = {}
-for _, unit in ipairs(unitTable) do
-    table.insert(unitNames, unit.Name .. " | Lv: " .. unit.Level)
-end
-
-local Select_Unit = MainTab:CreateDropdown({
-    Name = "Select Unit",
-    Options = unitNames,
-    CurrentOption = unitNames[1] or "N/A",
-    MultipleOptions = false,
-    Flag = "Select Unit",
-    Callback = function(Options)
-        print("Selected Unit: " .. Options[1])
-        for _, unit in ipairs(unitTable) do
-            if Options[1]:match(unit.Name) then
-                _G.unit_id = '"' .. unit.UUID .. '"'
-                print("Selected Unit UUID: " .. _G.unit_id)
-                break
-            end
-        end
-    end,
-})
-
-
-local wavelock = MainTab:CreateInput({
-    Name = "Sell units at wave",
-    CurrentValue = "",
-    PlaceholderText = "Input Wave",
-    RemoveTextAfterFocusLost = false,
-    Flag = "Wavelock",
-    Callback = function(waves)
-        _G.EndAtWave = waves
-        if _G.EndAtWave == 0 or nil then
-            print("infinite")
-        else
-            print(_G.EndAtWave)
-        end
-    end,
- })
-
-
-local Farm_Toggle = MainTab:CreateToggle({
-    Name = "Auto Farm",
-    CurrentValue = false,
-    Flag = "Auto Farm",
-    Callback = function(Value)
-      _G.isfarming = Value
-      local gmaae = workspace
-for i, v in pairs(gmaae:GetChildren()) do
-    if v.Name == "weather" then
-      if _G.isfarming then
-      print("Farming: ".. tostring(Value))
-      local args = {
-        [1] = portal
-    }
-    game:GetService("ReplicatedStorage").endpoints.client_to_server.request_join_lobby:InvokeServer(unpack(args))
-
-    wait(0.5)
-
-    local args = {
-        [1] = portal,
-        [2] = Selected_map,
-        [3] = false,
-        [4] = "Hard"
-    }
-    game:GetService("ReplicatedStorage").endpoints.client_to_server.request_lock_level:InvokeServer(unpack(args))
-
-    wait(0.3)
-
-    local args = {
-        [1] = portal
-    }
-    game:GetService("ReplicatedStorage").endpoints.client_to_server.request_start_game:InvokeServer(unpack(args))
-
-    Rayfield:Notify({
-        Title = "Aiweed",
-        Content = "Farm Status : ".. tostring(_G.isfarming),
-        Duration = 3,
-        Image = 4483362458,
-     })
-end
-end
-end
-end,
-})
-
-local WebhookFunction = MainTab:CreateSection("Webhook")
-local Main_Webhook = MainTab:CreateInput({
-   Name = "Main Notifier Webhook | (End Game Info), (Unit Place)",
-   CurrentValue = "",
-   PlaceholderText = "Input Webhook Url",
-   RemoveTextAfterFocusLost = true,
-   Flag = "Main_Notifier_Webhook",
-   Callback = function(webhook_url)
-      _G.webhook_url = webhook_url
-	  print(_G.webhook_url)
-   end,
-})
-
-local EnableMainHook = MainTab:CreateToggle({
-    Name = "Enable Main Webhook",
-    CurrentValue = _G.webhook,
-    Flag = "Enable Main Webhook",
-    Callback = function(Value)
-        _G.webhook = Value
-        print("Main webhook :" .. tostring(Value))
-    end,
-})
-
-local Second_Webhook = MainTab:CreateInput({
-   Name = "Reserve Notifier Webhook | (Player Uptime), etc.",
-   CurrentValue = "",
-   PlaceholderText = "Input Webhook Url",
-   RemoveTextAfterFocusLost = true,
-   Flag = "Reserve_Notifier_Webhook",
-   Callback = function(playeruptimewebhook)
-    _G.playeruptimewebhook = playeruptimewebhook
-	  print(_G.playeruptimewebhook)
-   end,
-})
-
-local Delay_Webhook = MainTab:CreateInput({
-   Name = "Reserve Notifier Webhook Delay (s)",
-   CurrentValue = "",
-   PlaceholderText = "Input Delay Second",
-   RemoveTextAfterFocusLost = false,
-   Flag = "Reserve Notifier Webhook",
-   Callback = function(Delay)
-      _G.uptimedelay = Delay
-	  print(_G.uptimedelay)
-   end,
-})
-
-local EnableSecondHook = MainTab:CreateToggle({
-    Name = "Enable Reserve Webhook",
-    CurrentValue = false,
-    Flag = "Enable Reserve Webhook",
-    Callback = function(Value)
-        _G.reserve_webhook = Value
-        print("Reserve webhook : " .. tostring(Value))
-    end,
-})
-
-Rayfield:LoadConfiguration()
-
-print("Whitelist Checking...")
-local UserId = {2409247051, 2397033664, 3417044281, 2751779831, 2040934091}
-local ShirtId = {144076357}
-local player = game.Players.LocalPlayer
-local isUserIdWhitelisted = false
-local isShirtIdWhitelisted = false
-local tohec = nil
-
-for _, id in ipairs(UserId) do
-    if player.UserId == id then
-        isUserIdWhitelisted = true
-        print("UserId ผ่าน")
-    end
-end
-
-if player.Character then
-    for _, v in ipairs(player.Character:GetChildren()) do
-        if v:IsA("Shirt") then
-            local shirtId1 = string.match(v.ShirtTemplate, "%d+$")
-            if shirtId1 then
-                tohec = tonumber(shirtId1)
-            end
-        end
-    end
-end
-
-for _, whitelistedShirtId in ipairs(ShirtId) do
-    if tohec == whitelistedShirtId then
-        isShirtIdWhitelisted = true
-        print("ShirtId ผ่าน")
-    end
-end
-
-wait(0.1)
-if isUserIdWhitelisted or isShirtIdWhitelisted then
-    print(player.Name .. " เข้าสู่ระบบสำเร็จ")
-	wait(1)
-local scriptURLs = {
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoReconnectIfDis.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoReplay.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoUpgradeUnit.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Drop_Notifier.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/JoinNotifier.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/LockWaves.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Miscal.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlaceUnit.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlayerUptime.lua",
-    "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/SendEndGameInfo.lua"
-}
-
-local screenText = Drawing.new("Text")
-screenText.Text = "Scripts Loaded: 0/" .. #scriptURLs
-screenText.Position = Vector2.new(10, 10)
-screenText.Size = 24
-screenText.Color = Color3.fromRGB(255, 255, 255)
-screenText.Outline = true
-screenText.OutlineColor = Color3.fromRGB(0, 0, 0)
-screenText.Visible = true
-
-local scriptsLoaded = 0
-
-local function runScript(url, index)
-    local success, err = pcall(function()
-        local scriptContent = game:HttpGet(url)
-        loadstring(scriptContent)()
-    end)
-
-    if success then
-        print(string.format("Script loaded successfully!"))
-    else
-        warn(string.format("Error loading script %d from %s: %s", (err)))
-    end
-
-    screenText.Text = string.format("Scripts Loaded")
-
-    if scriptsLoaded == #scriptURLs then
-        screenText.Text = "All Scripts Loaded!"
-        wait(3)
-        screenText.Visible = false
-    end
-end
-
-local function loadAllScripts()
-    print("Starting to load scripts...")
     
-    for index, url in ipairs(scriptURLs) do
-        spawn(function()
-            runScript(url, index)
-        end)
-        wait(0.1)
-        scriptsLoaded = scriptsLoaded + 1
+    if _G.GroundOrHill == "Ground" then
+        _G.L1 = CFrame.new(-2955.7119140625, 91.80620574951172, -713.1185302734375) * CFrame.Angles(0, -0, -0)
+        _G.L2 = CFrame.new(-2938.81396484375, 91.80620574951172, -698.8776245117188) * CFrame.Angles(0, -0, -0)
+        _G.L3 = CFrame.new(-2943.4169921875, 91.80620574951172, -693.7794799804688) * CFrame.Angles(0, -0, -0)
+        _G.L4 = CFrame.new(-2942.13134765625, 91.80620574951172, -699.491455078125) * CFrame.Angles(0, -0, -0)
+        _G.L5 = CFrame.new(-2942.319580078125, 91.80620574951172, -700.6551513671875) * CFrame.Angles(0, -0, -0)
     end
-end
+    
+    if _G.GroundOrHill == "Automatic" then
+        _G.Ground1 = CFrame.new(-2955.7119140625, 91.80620574951172, -713.1185302734375) * CFrame.Angles(0, -0, -0)
+        _G.Ground2 = CFrame.new(-2938.81396484375, 91.80620574951172, -698.8776245117188) * CFrame.Angles(0, -0, -0)
+        _G.Ground3 = CFrame.new(-2943.4169921875, 91.80620574951172, -693.7794799804688) * CFrame.Angles(0, -0, -0)
+        _G.Ground4 = CFrame.new(-2942.13134765625, 91.80620574951172, -699.491455078125) * CFrame.Angles(0, -0, -0)
+        _G.Ground5 = CFrame.new(-2942.319580078125, 91.80620574951172, -700.6551513671875) * CFrame.Angles(0, -0, -0)
+        _G.Hill1 = CFrame.new(-2948.45849609375, 94.41859436035156, -718.0990600585938) * CFrame.Angles(0, -0, -0)
+        _G.Hill2 = CFrame.new(-2951.012451171875, 94.41859436035156, -715.6174926757812) * CFrame.Angles(0, -0, -0)
+        _G.Hill3 = CFrame.new(-2946.866943359375, 94.41859436035156, -715.58837890625) * CFrame.Angles(0, -0, -0)
+        _G.Hill4 = CFrame.new(-2951.372314453125, 94.41859436035156, -720.463134765625) * CFrame.Angles(0, -0, -0)
+        _G.Hill5 = CFrame.new(-2953.207275390625, 94.41859436035156, -722.3843994140625) * CFrame.Angles(0, -0, -0)
+    end
 
 
-loadAllScripts()
-else
-    player:Kick("คุณไม่อยู่ใน whitelist หรือไม่มีเสื้อที่อนุญาต")
-end
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "Loading Script"
+    local Frame = Instance.new("Frame")
+    local ImageLabel = Instance.new("ImageLabel")
+    local TextLabel = Instance.new("TextLabel")
+    local LoadingBarContainer = Instance.new("Frame")
+    local LoadingBar = Instance.new("Frame")
+    local FooterTextLabel = Instance.new("TextLabel")
+    local SpinningImage = Instance.new("ImageLabel")
+    local RandomText = Instance.new("TextLabel")
+    local TweenService = game:GetService("TweenService")
+
+    ScreenGui.Parent = game.CoreGui
+
+    function getRandomFooterText()
+        local footerMessages = {
+            "ยังเก่งไม่พอเหรอถึงต้องพึ่งบอท?",
+            "นี่มันฝีมือคนหรือโปรแกรมกันแน่?",
+            "ชนะด้วยตัวเองมันยากไปเหรอ?",
+            "โปรแกรมยังอายเลยอะ",
+            "ฝีมือแค่นี้ยังอวดดี",
+            "สู้ๆ นะเผื่อวันนึงจะเลิกใช้บอทได้",
+            "เล่นเกมหรือให้บอทเล่นแทน?",
+            "สคริปต์นี่เทพจริง แต่คนเล่นไม่รู้ว่าเทพไหม",
+            "มัวแต่พึ่งบอท ระวังลืมวิธีเล่นเองนะ",
+            "อย่าลืมขอบคุณบอทด้วยนะ",
+            "บอทว่าไงบ้างครับเจ้านาย?",
+            "ขยันแบบนี้ไปทำงานบ้านให้แม่บ้างนะ",
+            "อ่อนเองโทษบอทไม่ได้เด้อ",
+            "บอทนี่แหละ MVP ตัวจริง",
+            "ใช้บอทจนเซียน ระวังเซียนแบบปลอมๆ",
+            "บอทก็เหนื่อยนะ อย่าลืมให้พักบ้าง",
+            "อยากเก่งเองไหม หรือแค่เก่งเพราะบอท?",
+            "เอะอะพึ่งบอท เอะอะพึ่งโปรแกรม",
+            "บอทก็คนมีหัวใจ แต่คุณไม่มีฝีมือ!",
+            "พึ่งบอทยังพอเข้าใจ แต่ทำไมยังไม่มีแฟน?",
+            "เล่นเกมเก่งขนาดนี้ แต่ทำไมแฟนไม่มี?",
+            "อ่อนทั้งเกม อ่อนทั้งความรักเลยนะ",
+            "จีบคนไม่เป็นเหมือนเล่นเกมใช่ไหมล่ะ?",
+            "บอทช่วยเล่นได้ แต่ช่วยเรื่องหัวใจไม่ได้นะ",
+            "เทพเรื่องบอท แต่ความรักนี่ 0 เลยนะ",
+            "อย่ามัวแต่ใช้บอท เดี๋ยวแฟนในจินตนาการงอนนะ",
+            "ฝีมือพอถูไถ แต่ความรักนี่ไปถูพื้นแทนเถอะ",
+            "ไม่มีแฟนยังพอเข้าใจ แต่ไม่มีฝีมือเกมนี่แย่กว่า!",
+            "ใช้บอทไปเถอะ เพราะแฟนก็หาไม่ได้อยู่ดี",
+            "คนยังหาไม่ได้ บอทยังเหนื่อยแทนเลย",
+            "บอทนี่แหละคู่ชีวิตตัวจริงของนาย",
+            "อย่ามัวแต่พึ่งบอท ระวังได้คบกับ AI แทนคน!",
+            "เล่นแบบนี้ ใครดูยังบอกว่า Skill Issue",
+            "เอ้า! Skill Issue ชัดๆ",
+            "พยายามอีกหน่อยนะ เรื่องฝีมือยังไม่ถึงครึ่ง",
+            "เกมนี้ไม่โทษบอทหรอก โทษ Skill Issue ล้วนๆ",
+            "ฝีมืออ่อนแล้วไง? ก็แค่ Skill Issue!",
+            "Skill Issue หรือเปล่า? ถามจริง!",
+            "ต้องให้บอทช่วยแปลว่า Skill Issue ระดับตำนาน",
+            "เห็นแบบนี้แล้ว บอทยังร้องว่า Skill Issue",
+            "อ่อนยังพอว่า แต่นี่ Skill Issue 100%",
+            "ล้มเหลวไม่เป็นไร แค่ Skill Issue เอง",
+            "ฝีมือขนาดนี้ยังอ้างว่าแลคได้อีก โอ้โห Skill Issue!",
+            "ล้มบ่อยไม่เป็นไร แค่ Skill Issue ธรรมดา",
+            "ถ้าแพ้เพราะบอทก็ด่าไม่ลง แต่ถ้าเพราะนายล่ะ? Skill Issue ชัด!",
+            "นี่ไม่ใช่บอทปัญหา แต่ Skill Issue ล้วนๆ",
+            "เก่งได้อีกแค่เลิก Skill Issue ซะก่อน!",
+            "แพ้เกมยังเจ็บน้อยกว่าแพ้ใจเธอ",
+            "เกมยังรีเซ็ตได้ แต่ความรักรีเซ็ตไม่ได้",
+            "ใช้บอทก็ยังไม่เจ็บเท่าเธอใช้เรา",
+            "กด F5 เพื่อรีเฟรชเกม แต่รีเฟรชใจยังไงล่ะ?",
+            "แพ้เกมว่าเจ็บแล้ว แต่เธอไม่รักเจ็บกว่า",
+            "เกมมีแพ้มีชนะ แต่รักเธอมีแต่น้ำตา",
+            "เกมจบไว แต่รักที่จบทำไมจำไม่ลืม",
+            "ถ้าเธอเป็นเกม ก็คงเป็นเกมที่ยากที่สุดในชีวิต",
+            "ความรักเหมือนเกมที่ไม่มีคู่มือ",
+            "กดปุ่มไหนให้ชนะใจเธอ บอกที",
+            "เกมยังเข้าใจได้ แต่เธอทำไมเข้าใจยากจัง?",
+            "ใช้บอทเล่นเกมยังง่ายกว่าเข้าใจความรัก",
+            "ความรักมันยากกว่าหาแรงค์ในเกมอีก",
+            "เกมกดรีสตาร์ทได้ แต่ใจที่พังแล้วรีไม่ได้",
+            "ถึงเกมจะแพ้ แต่รักที่แพ้คือเจ็บสุด",
+            "แพ้เกมยังพอแก้ไขได้ แต่แพ้ใจเธอแก้ยังไงล่ะ?",
+            "รักเหมือนเกม ที่เล่นยังไงก็ไม่เคยชนะ",
+            "ถ้าเธอเป็นเกม เราคงติดบั๊กอยู่ตลอด",
+            "บางเกมมีทางลัด แต่ความรักไม่มีให้เธอลัดมาหาเรา",
+            "แพ้เกมแค่เสียอันดับ แต่แพ้ใจเธอเสียหมดทุกอย่าง",
+            "ถ้าเกมรักมีคู่มือ เราคงไม่แพ้เธอบ่อยขนาดนี้",
+            "เธอไม่ใช่เกม แต่ทำไมเรารู้สึกแพ้ตลอดล่ะ?",
+            "จะเป็นเกมไหนก็ได้ แต่ขอไม่เป็นเกมที่เธอไม่เลือก",
+            "ในเกมมี MVP แต่ในใจเธอเรายังไม่ใช่เลย",
+            "ยังเก่งไม่พอเหรอถึงต้องพึ่งบอท?",
+            "ฝีมือไม่ถึง แต่ใจรักก็พอแล้ว!",
+            "เก่งแบบนี้ ไม่ต้องเล่นเองก็ชนะแล้ว!",
+            "ไม่เป็นไรนะ บอทยังเชื่อในตัวคุณ!",
+            "ถึงจะใช้บอท แต่คุณก็ยังดูเท่ (มั้ง)",
+            "อยากเก่งแบบไม่ต้องพึ่งบอท? ฝันต่อไป!",
+            "ไม่ต้องเครียด บอทของคุณทำเต็มที่แล้ว",
+            "บางทีบอทก็ดีกว่าฝีมือจริงของคุณนะ",
+            "ไม่มีบอท คุณจะยังเล่นไหวไหม?",
+            "ฝีมืออาจน้อย แต่ใจคุณใหญ่ (หรือเปล่า?)",
+            "แพ้ก็ไม่เป็นไร บอทยังอยู่ข้างคุณเสมอ!",
+            "บอทคือเพื่อนแท้ของคุณในยามยาก",
+            "ถ้าไม่มีบอท คุณอาจเลิกเล่นไปแล้วก็ได้!",
+            "สู้ๆ นะ ถึงใช้บอทก็ถือว่ามีความพยายาม!",
+            "ใช้บอทได้ไง? เก่งพอตั้งแต่โหลดโปรแกรมแล้ว!",
+            "ไม่ต้องอายที่จะใช้บอท เพราะมันช่วยคุณได้มาก",
+            "พึ่งบอทไม่ใช่เรื่องแย่... แค่ไม่ใช่เรื่องดี!",
+            "ถ้าฝีมือไม่ถึง ก็บอทช่วยได้!",
+            "อย่าให้ใครดูถูกคุณ... ยกเว้นบอทที่คุณใช้",
+            "ถึงจะใช้บอท แต่ใจคุณสู้เกินร้อย!",
+            "ไม่ต้องห่วง บอทยังเก่งกว่าศัตรูบางคนอีก!",
+            "ถ้าฝีมือมีน้อย บอทช่วยเติมเต็มได้!",
+            "ใช้บอทไม่ใช่ความผิด มันคือยุทธศาสตร์!",
+            "แค่ใช้บอทก็ถือว่ามีสมอง (รึเปล่า?)",
+            "อย่าลืมขอบคุณบอท เพราะมันทำให้คุณดูเก่งขึ้น!",
+            "ใช้บอทไปเถอะ บางคนไม่รู้ด้วยซ้ำว่าคุณใช้!",
+            "บอทไม่บ่น เจ้านายไม่เหนื่อย นี่แหละทีมเวิร์ค!",
+            "อย่าคิดมาก บอทยังเชื่อมั่นในตัวคุณอยู่!",
+            "บอททำงานหนักกว่าคุณ แต่ก็ไม่บ่นนะ!",
+            "กูเขียนบอท มึงแค่ใช้นิ้วจิ้ม!",
+            "มึงกดเริ่ม กูเขียนโค้ด กูเหนื่อยกว่า!",
+            "กูทำบอทให้ฟาร์ม มึงแค่รอดูผลลัพธ์!",
+            "มึงนั่งกินขนม กูนั่งแก้บั๊ก!",
+            "มึงใช้บอทของกู รวยได้เพราะกูนะเว้ย!",
+            "กูขยันเขียนบอท แต่บอทขยันกว่ามึง!",
+            "มึงนอน กูโค้ด มึงตื่นมาก็รวย!",
+            "บอทกูทำงาน มึงแค่เดินไปหยิบเงิน!",
+            "มึงเก่งตรงไหน? กูเขียนบอทให้เก่งแทนแล้ว!",
+            "บอทที่มึงใช้ กูเขียนเองกับมือ!",
+            "มึงใช้บอทฟาร์ม กูเขียนฟาร์มบอท!",
+            "กูทำบอทเพื่อความรวย มึงใช้บอทเพื่อความขี้เกียจ!",
+            "บอทกูเทพ แต่คนใช้บอทยังต้องฝึกอีกเยอะนะมึง!",
+            "มึงรวยในเกม เพราะบอทที่กูเขียน!",
+            "มึงเคยขอบคุณกูไหม ที่เขียนบอทให้มึงใช้!",
+            "มึงฟาร์มได้ทุกอย่างในเกม เพราะกูนั่งโค้ดทั้งคืน!",
+            "มึงรวยด้วยบอท กูรวยด้วยสมอง!",
+            "มึงบอกเหนื่อย แต่กูนั่งพิมพ์โค้ดจนตาแฉะ!",
+            "มึงรู้ปะ กูแก้บั๊กจนฝันเห็นโค้ด!",
+            "มึงเทพในเกม แต่กูเทพในชีวิตจริง!",
+            "บอทที่มึงใช้ กูไม่คิดเงินก็โชคดีแค่ไหนแล้ว!",
+            "มึงใช้บอทจนเพลิน กูนั่ง debug จนเบลอ!",
+            "กูทำบอทให้มึงฟาร์ม มึงก็แค่รอดูผล!",
+            "มึงได้บอทจากกูแล้วไปอวดคนอื่น รู้ยังว่ากูขยันแค่ไหน!",
+            "มึงขี้เกียจเล่น แต่กูโคตรขยันเขียนบอท!",
+            "มึงแค่กดรัน บอทกูทำให้หมด!",
+            "มึงเล่นแบบง่ายๆ เพราะกูนั่งคิดจนหัวหมุน!",
+            "กูโค้ดจนมือหงิก แต่มึงบอก 'ขอบใจ' แค่คำเดียว!",
+            "มึงเลี้ยงชีพในเกมได้ เพราะบอทกูนี่แหละ!",
+            "บอทของกูไม่เคยบ่น แต่มึงบ่นอะไรนักหนา!", 
+            "เขียนบอททั้งวัน แต่ไม่มีคนเขียนใจให้กูเลย!",
+            "บอทมีอัพเดต แต่ใจยังไม่มีคนอัพเกรด!",
+            "บั๊กแก้ได้ แต่ความเหงาแก้ยังไงวะ!",
+            "บอทเขียนจบแล้ว แต่ความรักยังไม่เริ่มเลย!",
+            "กูโค้ดบอทให้มึงรวย แต่กูยังไม่มีแฟน!",
+            "บอททำงาน 24 ชั่วโมง ส่วนกูเหงา 24 ชั่วโมง!",
+            "คนใช้บอทรวย คนเขียนบอทโสด!",
+            "กูใช้สมองเขียนบอทแทนใช้หัวใจจีบสาว!",
+            "กูทำบอทให้มึงเล่น แต่ไม่มีใครเล่นกับใจกูเลย!",
+            "บอททำงานแทนคน แต่ไม่มีใครมาทำงานแทนใจ!",
+            "มึงมีบอท กูมีแต่ความเหงา!",
+            "เขียนบอทให้ง่าย แต่ความรักแม่งยากไปปะวะ!",
+            "แก้บั๊กได้ทุกวัน แต่แก้โสดไม่ได้เลย!",
+            "บอทที่กูเขียนยังมีคนใช้ แต่คนที่ใช่ยังไม่มี!",
+            "ถ้าความรักเป็นโค้ด กูคง debug จนหมดแล้ว!",
+            "บอทยังอยู่เคียงข้างมึง แต่กูยังอยู่คนเดียว!",
+            "มึงมีคนคอยเล่นด้วย กูมีแต่โค้ดเล่นงาน!",
+            "กูไม่เหงาหรอก กูมีบั๊กเป็นเพื่อน!",
+            "บอทเขียนด้วย Python ส่วนความรักเขียนด้วยอะไรไม่รู้!",
+            "มึงใช้บอทเพลิน ส่วนกูเหงาเพลิน!",
+            "บอทฟาร์มได้ทุกอย่าง แต่ฟาร์มแฟนให้กูไม่ได้!",
+            "ชีวิตคนเขียนบอท: โสด, โค้ด, นอน!",
+            "เขียนบอทแม่งสนุกดี แต่เขียนใจใครไม่เป็นเลย!",
+            "บอทกูเทพนะ แต่กูจีบสาวไม่เทพเลย!",
+            "กูเขียนบอทจนเซียน แต่ยังไม่เซียนเรื่องความรัก!",
+            "มึงมีแฟนแล้ว แต่คนเขียนบอทยังต้องโสดต่อไป!",
+            "คนใช้บอทดูมีอนาคต ส่วนกูดูมีแต่ความเหงา!",
+            "บอทที่มึงใช้มันฉลาด กูที่เขียนแม่งโคตรเหงา!",
+            "ถ้าการเขียนบอทหาแฟนได้ กูคงไม่โสดแบบนี้!",
+            "บอทคือผู้กอบกู้ศักดิ์ศรีของคุณ!",
+            "ไม่มีบอท ไม่มีชัยชนะ!",
+            "บอทนี่แหละของจริง คนเล่นก็แค่ตัวประกอบ!",
+            "ถึงตัวคุณจะอ่อน แต่บอทของคุณเทพ!",
+            "ยอมรับเถอะ บอทคือ MVP ตัวจริง!",
+            "ถ้าไม่มีบอท คุณอาจจบตั้งแต่วินาทีแรกแล้ว!",
+            "บอททำงานหนักมาก โปรดให้เกียรติมันด้วย!",
+            "ชัยชนะครั้งนี้ ต้องยกเครดิตให้บอท!",
+            "บอทคือพระเอกของเกมนี้!",
+            "ไม่ใช่คุณหรอกที่ชนะ บอทต่างหาก!",
+            "ถ้าบอทพูดได้ มันคงเหนื่อยแทนคุณไปแล้ว!",
+            "บอทคือเพื่อนแท้ที่ไม่มีวันทิ้งคุณ!",
+            "กด F ให้บอทที่ช่วยแบกคุณมาถึงจุดนี้!",
+            "เกมนี้เล่นง่าย เพราะบอททำทุกอย่างแทนคุณ!",
+            "ไม่มีบอท คุณคงหลุดจากแรงค์ไปแล้ว!",
+            "ทีมที่ดีต้องมีบอทเทพอย่างคุณ!",
+            "บอทนี่แหละตัวจริง เสียงจริง!",
+            "แค่มีบอท คุณก็เหมือนเทพเจ้าในเกม!",
+            "อย่าลืมขอบคุณบอทนะ มันช่วยคุณเยอะแล้ว!",
+            "บอทคือทุกสิ่ง ทุกอย่างของคุณในเกมนี้!",
+            "ถ้าบอทลาออก คุณคงลำบากแน่!",
+            "ชัยชนะเป็นของคุณ แต่แรงกายเป็นของบอท!",
+            "ทีมเรามีบอทที่ดีที่สุดในโลก!",
+            "อย่าลืมบอทไปนะ มันคือฮีโร่ของคุณ!",
+            "เล่นดีเพราะบอท แต่ให้เครดิตตัวเองก็ได้!",
+            "บอทไม่ได้พูด แต่บอททำ!",
+            "ถ้าบอทมีหัวใจ มันคงภูมิใจในตัวคุณ!",
+            "ชนะได้เพราะบอท ไม่ต้องสงสัยเลย!",
+            "บอทช่วยคุณแล้ว อย่าลืมตอบแทนมันบ้าง!",
+            "ฟาร์มจนรวยเพราะบอท คนเล่นแค่ประกอบฉาก!",
+            "ถ้าบอทมีบัญชีธนาคาร คงรวยกว่าเจ้าของแล้ว!",
+            "เงินในเกมเยอะ แต่ฝีมือในเกมยังน้อยนะ!",
+            "ฟาร์มหนักขนาดนี้ บอทยังไม่ได้ค่าจ้างเลย!",
+            "รวยเพราะบอท แต่ยังจนในฝีมือ!",
+            "บอททำงาน คุณนั่งนับเงิน!",
+            "ชีวิตดีขึ้นทันทีที่มีบอท!",
+            "บอทหาเงินเก่ง คุณใช้เงินเก่ง!",
+            "ฟาร์มจนซื้อทุกอย่างในเกมได้ แต่ฝีมือยังต้องเช่า!",
+            "ถ้าบอทพูดได้ คงบอกว่า 'กูเหนื่อย!'",
+            "ทองเต็มคลัง แต่ฝีมือยังอยู่ที่คลังขยะ!",
+            "ถ้าไม่มีบอท คุณคงเป็นขอทานในเกม!",
+            "บอทฟาร์มทั้งวัน เจ้าของฟาร์มทั้งใจ!",
+            "รวยจนล้นเซิร์ฟ แต่ไม่มีใครจ้างคุณเป็นโปร!",
+            "ขอบคุณบอทที่ทำให้ชีวิตในเกมดีขึ้น!",
+            "บอททำงานหนัก แต่คุณแค่เอามือไขว้หลัง!",
+            "บอทฟาร์มจนรวย แต่คุณยังแพ้คนอื่นอยู่ดี!",
+            "ไม่ต้องเหนื่อยเลย บอทฟาร์มให้หมดแล้ว!",
+            "บอทคือคนหาเงิน คุณคือคนใช้เงิน!",
+            "ในเกมรวยสุด ในชีวิตจริงยังใช้เศษเหรียญอยู่หรือเปล่า?",
+            "ฟาร์มหนักขนาดนี้ เซิร์ฟเวอร์ยังกลัวบอท!",
+            "ใช้บอทจนเป็นเศรษฐี แต่ฝีมือก็ยังเท่าเดิม!",
+            "ฟาร์มไปเรื่อยๆ จนทีมงานสงสัยว่ามนุษย์หรือบอท!",
+            "ถ้าบอทลาออก คุณคงกลับไปจนในเกมทันที!",
+            "รวยในเกม แต่บอทเป็นคนทำงานให้หมด!",
+            "ฟาร์มจนเกมแทบล่ม แต่คนยังด่าว่าเล่นไม่เป็น!",
+            "บอทหาของให้ คุณแค่ยืนเก๊กหล่อ!",
+            "รวยแล้วไง? ก็แค่ใช้บอททำงานแทนทั้งนั้น!",
+            "ทองเต็มตัวละคร แต่ฝีมือยังเหมือนตอนเริ่มเกม!"
+        }
+        return footerMessages[math.random(1, #footerMessages)]
+    end
+
+    function getRandomKeyboardText1()
+        local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
+        local result = ""
+        for i = 1, 2 do
+            local randomIndex = math.random(2, #characters)
+            result = result .. string.sub(characters, randomIndex, randomIndex)
+        end
+        return result
+    end
+
+    function getRandomKeyboardText2()
+        local characters = "max_maax_"
+        local result = ""
+        for i = 1, 2 do
+            local randomIndex = math.random(2, #characters)
+            result = result .. string.sub(characters, randomIndex, randomIndex)
+        end
+        return result
+    end
+
+    local function startTypingAnimation1()
+        while true do
+            local randomText1 = getRandomKeyboardText1()
+            local randomText2 = getRandomKeyboardText2()
+            TextLabel.Text = "["..randomText1.."] Cle"..randomText2.."tis Hub ["..randomText1.."]"
+            wait()
+        end
+    end
+
+    spawn(startTypingAnimation1)
+
+    Frame.Size = UDim2.new(1, 0, 1, 0)
+    Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Frame.BackgroundTransparency = 1
+    Frame.Parent = ScreenGui
+    ImageLabel.Size = UDim2.new(0, 300, 0, 300)
+    ImageLabel.Position = UDim2.new(0.5, -150, 0.1, 0)
+    ImageLabel.BackgroundTransparency = 1
+    ImageLabel.ImageTransparency = 1
+    ImageLabel.Image = "http://www.roblox.com/asset/?id=83415391084673"
+    ImageLabel.Parent = Frame
+    TextLabel.Size = UDim2.new(0, 500, 0, 50)
+    TextLabel.Position = UDim2.new(0.5, -250, 0.6, 0)
+    TextLabel.BackgroundTransparency = 1
+    TextLabel.Text = "| Clematis Hub |"
+    TextLabel.TextTransparency = 1
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.TextScaled = true
+    TextLabel.Font = Enum.Font.Arcade
+    TextLabel.Parent = Frame
+    LoadingBarContainer.Size = UDim2.new(0, 400, 0, 10)
+    LoadingBarContainer.Position = UDim2.new(0.5, -200, 0.7, 0)
+    LoadingBarContainer.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    LoadingBarContainer.BorderSizePixel = 0
+    LoadingBarContainer.BackgroundTransparency = 1
+    LoadingBarContainer.Parent = Frame
+    LoadingBar.Size = UDim2.new(0, 0, 1, 0)
+    LoadingBar.Position = UDim2.new(0, 0, 0, 0)
+    LoadingBar.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+    LoadingBar.BorderSizePixel = 0
+    LoadingBar.Parent = LoadingBarContainer
+    FooterTextLabel.Size = UDim2.new(0, 500, 0, 50)
+    FooterTextLabel.Position = UDim2.new(0.5, -250, 0.75, 0)
+    FooterTextLabel.BackgroundTransparency = 1
+    FooterTextLabel.Text = getRandomFooterText()
+    FooterTextLabel.TextTransparency = 1
+    FooterTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FooterTextLabel.TextScaled = true
+    FooterTextLabel.Font = Enum.Font.Arcade
+    FooterTextLabel.Parent = Frame
+    SpinningImage.Size = UDim2.new(0, 150, 0, 150)
+    SpinningImage.Position = UDim2.new(0.05, 0, 0.05, 0)
+    SpinningImage.BackgroundTransparency = 1
+    SpinningImage.Image = "http://www.roblox.com/asset/?id=131760570564124"
+    SpinningImage.ImageTransparency = 1
+    SpinningImage.Parent = Frame
+    RandomText.Size = UDim2.new(0, 300, 0, 50)
+    RandomText.Position = UDim2.new(0.5, -150, 0.85, 0)
+    RandomText.BackgroundTransparency = 1
+    RandomText.Text = ""
+    RandomText.TextTransparency = 1
+    RandomText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    RandomText.TextScaled = true
+    RandomText.Font = Enum.Font.Arcade
+    RandomText.Parent = Frame
+
+    function getRandomKeyboardText()
+        local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
+        local result = ""
+        for i = 1, 20 do
+            local randomIndex = math.random(1, #characters)
+            result = result .. string.sub(characters, randomIndex, randomIndex)
+        end
+        return result
+    end
+
+    local function startTypingAnimation()
+        while true do
+            local randomText = getRandomKeyboardText()
+            RandomText.Text = randomText
+            wait(0.1)
+        end
+    end
+    spawn(startTypingAnimation)
+
+    local rotateTweenInfo = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
+    local rotateTween = TweenService:Create(SpinningImage, rotateTweenInfo, {Rotation = 600})
+    local fadeInInfo = TweenInfo.new(2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+    local fadeOutInfo = TweenInfo.new(2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+    local loadingTweenInfo = TweenInfo.new(1.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+    local fadeInFrame = TweenService:Create(Frame, fadeInInfo, {BackgroundTransparency = 0.1})
+    local fadeInImage = TweenService:Create(ImageLabel, fadeInInfo, {ImageTransparency = 0})
+    local fadeInText = TweenService:Create(TextLabel, fadeInInfo, {TextTransparency = 0})
+    local fadeInLoadingBar = TweenService:Create(LoadingBarContainer, fadeInInfo, {BackgroundTransparency = 0})
+    local fadeInFooterText = TweenService:Create(FooterTextLabel, fadeInInfo, {TextTransparency = 0})
+    local fadeInRandomtext = TweenService:Create(RandomText, fadeInInfo, {TextTransparency = 0})
+    local fadeInSpinningObj = TweenService:Create(SpinningImage, fadeInInfo, {ImageTransparency = 0})
+    local loadingTween = TweenService:Create(LoadingBar, loadingTweenInfo, {Size = UDim2.new(1, 0, 1, 0)})
+    local fadeOutFrame = TweenService:Create(Frame, fadeOutInfo, {BackgroundTransparency = 1})
+    local fadeOutImage = TweenService:Create(ImageLabel, fadeOutInfo, {ImageTransparency = 1})
+    local fadeOutText = TweenService:Create(TextLabel, fadeOutInfo, {TextTransparency = 1})
+    local fadeOutLoadingBar = TweenService:Create(LoadingBarContainer, fadeOutInfo, {BackgroundTransparency = 1})
+    local fadeOutBar = TweenService:Create(LoadingBar, fadeOutInfo, {BackgroundTransparency = 1})
+    local fadeOutFooterText = TweenService:Create(FooterTextLabel, fadeOutInfo, {TextTransparency = 1})
+    local fadeOutRandomtext = TweenService:Create(RandomText, fadeOutInfo, {TextTransparency = 1})
+    local fadeOutSpinningObj = TweenService:Create(SpinningImage, fadeOutInfo, {ImageTransparency = 1})
+
+    rotateTween:Play()
+    fadeInFrame:Play()
+    fadeInImage:Play()
+    fadeInText:Play()
+    fadeInRandomtext:Play()
+    fadeInSpinningObj:Play()
+    fadeInLoadingBar:Play()
+    fadeInFooterText:Play()
+
+    fadeInFrame.Completed:Connect(function()
+        loadingTween:Play()
+        loadingTween.Completed:Connect(function()
+            wait(0.5)
+            fadeOutFrame:Play()
+            fadeOutImage:Play()
+            fadeOutText:Play()
+            fadeOutLoadingBar:Play()
+            fadeOutBar:Play()
+            fadeOutFooterText:Play()
+            fadeOutRandomtext:Play()
+            fadeOutSpinningObj:Play()
+            fadeOutFrame.Completed:Connect(function()
+                ScreenGui:Destroy()
+            end)
+        end)
+    end)
+
+    wait(1)
+
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+        game:GetService("VirtualUser"):CaptureController()
+        game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    end)
+    function getRandomKeyboardText3()
+        local characters = "!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?1234567890qwertyuiop[]asdfghjkl;zxcvbnm,./"
+        local result = ""
+        for i = 1, 20 do
+            local randomIndex = math.random(2, #characters)
+            result = result .. string.sub(characters, randomIndex, randomIndex)
+        end
+        return result
+    end
+    local function startTypingAnimation3()
+        local randomText1 = getRandomKeyboardText3()
+        random_name = "| Clema"..randomText1.."tis Hub |"
+    end
+    spawn(startTypingAnimation3)
+    _G.theme = "Amethyst"
+    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+    local MainWindow = Rayfield:CreateWindow({
+        Name = random_name,
+        Icon = 0,
+        LoadingTitle = "Loaded!",
+        LoadingSubtitle = "Script By seaweed_hunter",
+        Theme = _G.theme,
+        DisableRayfieldPrompts = false,
+        DisableBuildWarnings = false,
+        ConfigurationSaving = {
+            Enabled = true,
+            FolderName = nil,
+            FileName = "Clematis"
+        },
+        Discord = {
+            Enabled = false,
+            Invite = "noinvitelink",
+            RememberJoins = true
+        },
+        KeySystem = false,
+        KeySettings = {
+            Title = "Key?",
+            Subtitle = "Key on Discord Server",
+            Note = "Get Key From Discord",
+            FileName = "Key",
+            SaveKey = true,
+            GrabKeyFromSite = false,
+            Key = {"What da hell"}
+        }
+    })
+
+    local MainTab = MainWindow:CreateTab("Main")
+    local MainFunction = MainTab:CreateSection("Auto Farm")
+    defaultportal = "1"
+    defaultmap = "Namek"
+    Selected_map = "namek_infinite"
+    _G.isfarming = false
+    _G.EndAtWave = 0
+    _G.webhook = true
+    _G.limitunit = 5 
+
+    local unitOptions = {}
+    for i = 1, 5 do
+        table.insert(unitOptions, tostring(i)) 
+    end
+
+    local PortalSelect = MainTab:CreateDropdown({
+        Name = "Select Teleport Capsule",
+        Options = {"1", "2", "3", "4", "5", "6", "7", "8","9","10","11","12"},
+        CurrentOption = defaultportal,
+        MultipleOptions = false,
+        Flag = "Selected Portal",
+        Callback = function(Options)
+            defaultportal = Options[1]
+            print("_lobbytemplategreen" .. defaultportal)
+            portal = "_lobbytemplategreen" .. defaultportal
+        end,
+    })
+
+    local MapSelect = MainTab:CreateDropdown({
+        Name = "Select Map",
+        Options = {"Namek", "Kanext"},
+        CurrentOption = defaultmap,
+        MultipleOptions = false,
+        Flag = "Selected Map",
+        Callback = function(Options)
+            defaultmap = Options[1]
+            print("Selected Map: " .. defaultmap)
+            if defaultmap == "Namek" then
+                Selected_map = "namek_infinite"
+            elseif defaultmap == "Kanext" then
+                Selected_map = "kanext_infinite"
+            end
+            
+            print("Selected Map for teleport: " .. Selected_map)
+        end,
+    })
+
+    local MaxUnitSelect = MainTab:CreateDropdown({
+        Name = "Select Max Unit",
+        Options = unitOptions,
+        CurrentOption = tostring(_G.limitunit),
+        MultipleOptions = false,
+        Flag = "Selected Max Unit",
+        Callback = function(Options)
+            _G.limitunit = tonumber(Options[1])
+            print("เลือกจำนวนยูนิตสูงสุดเป็น: " .. _G.limitunit)
+        end,
+    })
+    
+
+    unitTable = {}
+    local getunitid = game:GetService("ReplicatedStorage")._FX_CACHE
+
+    local function insertIntoTable(unitName, unitId, unitLv)
+        table.insert(unitTable, {
+            Name = unitName,
+            UUID = unitId,
+            Level = unitLv
+        })
+    end
+
+    for i, v in pairs(getunitid:GetDescendants()) do
+        if v.Name == "CollectionUnitFrame" then
+            local unitName = v.name.Text
+            local unitId = v._uuid.Value
+            local unitLv = v.Main.Level.Text
+            insertIntoTable(unitName, unitId, unitLv)
+        end
+    end
+
+    local unitNames = {}
+    local unitUUIDs = {}
+    
+    for _, unit in ipairs(unitTable) do
+        local displayName = unit.Name .. " | Lv: " .. unit.Level
+        table.insert(unitNames, displayName)
+        table.insert(unitUUIDs, unit.UUID)
+    end
+    
+    local wow = {}
+    local Select_Unit = MainTab:CreateDropdown({
+        Name = "Select Unit to get ID",
+        Options = unitNames,
+        CurrentOption = unitNames[1] or "N/A",
+        MultipleOptions = false,
+        Flag = "Select Unit",
+        Callback = function(Options)
+            local selectedName = Options[1]:match("^(.-) | Lv:")
+            local selectedLevel = Options[1]:match("Lv: (.+)")
+    
+            table.clear(wow)
+    
+            for i, unit in ipairs(unitTable) do
+                if unit.Name == selectedName and unit.Level == selectedLevel then
+                    table.insert(wow, unit.UUID)
+                    break
+                end
+            end
+        end,
+    })
+    
+    local Copyid = MainTab:CreateButton({
+        Name = "Copy Unit Id",
+        Callback = function()
+            if #wow > 0 then
+                local textToCopy = wow[1]
+                local function copyToClipboard(text)
+                    local success, message = pcall(function()
+                        setclipboard(text)
+                    end)
+    
+                    if success then
+                        print("ข้อความถูกคัดลอกเรียบร้อยแล้ว!")
+                    else
+                        print("เกิดข้อผิดพลาดในการคัดลอกข้อความ:", message)
+                    end
+                end
+    
+                copyToClipboard(textToCopy)
+            else
+                print("ไม่พบ UUID สำหรับการคัดลอก!")
+            end
+        end,
+    })
+    
+
+    local SaveUnit = MainTab:CreateInput({
+        Name = "Input ID Here",
+        CurrentValue = "",
+        PlaceholderText = "Input UUID",
+        RemoveTextAfterFocusLost = false,
+        Flag = "SaveUnit",
+        Callback = function(saveunit)
+            _G.unit_id = saveunit
+        end,
+        })
+
+    local wavelock = MainTab:CreateInput({
+        Name = "Sell units at wave",
+        CurrentValue = "",
+        PlaceholderText = "Input Wave",
+        RemoveTextAfterFocusLost = false,
+        Flag = "Wavelock",
+        Callback = function(waves)
+            _G.EndAtWave = waves
+            if _G.EndAtWave == 0 or nil then
+                print("infinite")
+            else
+                print(_G.EndAtWave)
+            end
+        end,
+    })
+
+
+    local Farm_Toggle = MainTab:CreateToggle({
+        Name = "Auto Farm",
+        CurrentValue = false,
+        Flag = "Auto Farm",
+        Callback = function(Value)
+        _G.isfarming = Value
+        wait(10)
+        local gmaae = workspace
+    for i, v in pairs(gmaae:GetChildren()) do
+        if v.Name == "weather" then
+        if _G.isfarming then
+        print("Farming: ".. tostring(Value))
+        local args = {
+            [1] = portal
+        }
+        game:GetService("ReplicatedStorage").endpoints.client_to_server.request_join_lobby:InvokeServer(unpack(args))
+
+        wait(0.5)
+
+        local args = {
+            [1] = portal,
+            [2] = Selected_map,
+            [3] = false,
+            [4] = "Hard"
+        }
+        game:GetService("ReplicatedStorage").endpoints.client_to_server.request_lock_level:InvokeServer(unpack(args))
+
+        wait(0.3)
+
+        local args = {
+            [1] = portal
+        }
+        game:GetService("ReplicatedStorage").endpoints.client_to_server.request_start_game:InvokeServer(unpack(args))
+
+        Rayfield:Notify({
+            Title = "Aiweed",
+            Content = "Farm Status : ".. tostring(_G.isfarming),
+            Duration = 3,
+            Image = 4483362458,
+        })
+    end
+    end
+    end
+    end,
+    })
+
+    local WebhookFunction = MainTab:CreateSection("Webhook")
+    local Main_Webhook = MainTab:CreateInput({
+    Name = "Main Notifier Webhook | (End Game Info), (Unit Place)",
+    CurrentValue = "",
+    PlaceholderText = "Input Webhook Url",
+    RemoveTextAfterFocusLost = true,
+    Flag = "Main_Notifier_Webhook",
+    Callback = function(webhook_url)
+        _G.webhook_url = webhook_url
+        print(_G.webhook_url)
+    end,
+    })
+
+    local EnableMainHook = MainTab:CreateToggle({
+        Name = "Enable Main Webhook",
+        CurrentValue = _G.webhook,
+        Flag = "Enable Main Webhook",
+        Callback = function(Value)
+            _G.webhook = Value
+            print("Main webhook :" .. tostring(Value))
+        end,
+    })
+
+    local Second_Webhook = MainTab:CreateInput({
+    Name = "Reserve Notifier Webhook | (Player Uptime), etc.",
+    CurrentValue = "",
+    PlaceholderText = "Input Webhook Url",
+    RemoveTextAfterFocusLost = true,
+    Flag = "Reserve_Notifier_Webhook",
+    Callback = function(playeruptimewebhook)
+        _G.playeruptimewebhook = playeruptimewebhook
+        print(_G.playeruptimewebhook)
+    end,
+    })
+
+    local Delay_Webhook = MainTab:CreateInput({
+    Name = "Reserve Notifier Webhook Delay (s)",
+    CurrentValue = "",
+    PlaceholderText = "Input Delay Second",
+    RemoveTextAfterFocusLost = false,
+    Flag = "Reserve Notifier Webhook",
+    Callback = function(Delay)
+        _G.uptimedelay = Delay
+        print(_G.uptimedelay)
+    end,
+    })
+
+    local EnableSecondHook = MainTab:CreateToggle({
+        Name = "Enable Reserve Webhook",
+        CurrentValue = false,
+        Flag = "Enable Reserve Webhook",
+        Callback = function(Value)
+            _G.playeruptime = Value
+            print("Reserve webhook : " .. tostring(Value))
+        end,
+    })
+
+    Rayfield:LoadConfiguration()
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------WHITELIST FIELD------------------------------------------------
+    
+    print("Whitelist Checking...")
+    local UserId = {2409247051, 2397033664, 3417044281, 2751779831, 2040934091}
+    local ShirtId = {144076357}
+    local player = game.Players.LocalPlayer
+    local isUserIdWhitelisted = false
+    local isShirtIdWhitelisted = false
+    local tohec = nil
+
+    for _, id in ipairs(UserId) do
+        if player.UserId == id then
+            isUserIdWhitelisted = true
+            print("UserId ผ่าน")
+        end
+    end
+
+    if player.Character then
+        for _, v in ipairs(player.Character:GetChildren()) do
+            if v:IsA("Shirt") then
+                local shirtId1 = string.match(v.ShirtTemplate, "%d+$")
+                if shirtId1 then
+                    tohec = tonumber(shirtId1)
+                end
+            end
+        end
+    end
+
+    for _, whitelistedShirtId in ipairs(ShirtId) do
+        if tohec == whitelistedShirtId then
+            isShirtIdWhitelisted = true
+            print("ShirtId ผ่าน")
+        end
+    end
+
+    wait(0.1)
+    if isUserIdWhitelisted or isShirtIdWhitelisted then
+        print(player.Name .. " เข้าสู่ระบบสำเร็จ")
+        wait(1)
+    local scriptURLs = {
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoReconnectIfDis.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoReplay.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/AutoUpgradeUnit.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Drop_Notifier.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/JoinNotifier.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/LockWaves.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/Miscal.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlaceUnit.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/PlayerUptime.lua",
+        "https://raw.githubusercontent.com/Oak4Blood/AnimeAdventure/refs/heads/main/SendEndGameInfo.lua"
+    }
+
+    local screenText = Drawing.new("Text")
+    screenText.Text = "Scripts Loaded: 0/" .. #scriptURLs
+    screenText.Position = Vector2.new(10, 10)
+    screenText.Size = 24
+    screenText.Color = Color3.fromRGB(255, 255, 255)
+    screenText.Outline = true
+    screenText.OutlineColor = Color3.fromRGB(0, 0, 0)
+    screenText.Visible = true
+
+    local scriptsLoaded = 0
+
+    local function runScript(url, index)
+        local success, err = pcall(function()
+            local scriptContent = game:HttpGet(url)
+            loadstring(scriptContent)()
+        end)
+
+        if success then
+            print(string.format("Script loaded successfully!"))
+        else
+            warn(string.format("Error loading script %d from %s: %s", (err)))
+        end
+
+        screenText.Text = string.format("Scripts Loaded")
+
+        if scriptsLoaded == #scriptURLs then
+            screenText.Text = "All Scripts Loaded!"
+            wait(3)
+            screenText.Visible = false
+        end
+    end
+
+    local function loadAllScripts()
+        print("Starting to load scripts...")
+        
+        for index, url in ipairs(scriptURLs) do
+            spawn(function()
+                runScript(url, index)
+            end)
+            wait(0.1)
+            scriptsLoaded = scriptsLoaded + 1
+        end
+    end
+
+
+    loadAllScripts()
+    else
+        player:Kick("คุณไม่อยู่ใน whitelist หรือไม่มีเสื้อที่อนุญาต")
+    end
