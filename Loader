@@ -468,7 +468,7 @@ Selected_map = "namek_infinite"
 _G.isfarming = false
 _G.EndAtWave = 0
 _G.webhook = true
-_G.limitunit = 3
+_G.limitunit = 5
 
 local PortalSelect = MainTab:CreateDropdown({
     Name = "Select Teleport Capsule",
@@ -499,18 +499,6 @@ local MapSelect = MainTab:CreateDropdown({
         end
         
         print("Selected Map for teleport: " .. Selected_map)
-    end,
-})
-
-local MaxUnit = MainTab:CreateDropdown({
-    Name = "Select Max Unit",
-    Options = {"1","2","3","4","5"},
-    CurrentOption = "",
-    MultipleOptions = false,
-    Flag = "MaxUnit",
-    Callback = function(Options)
-        _G.limitunit = Options[1]
-        print(_G.limitunit)
     end,
 })
 
