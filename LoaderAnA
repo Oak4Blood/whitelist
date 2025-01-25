@@ -519,7 +519,7 @@ local Select_Unit = MainTab:CreateDropdown({
         for _, unit in ipairs(unitTable) do
             if Options[1]:match(unit.Name) then
                 _G.unit_id = unit.UUID
-                print("Selected Unit UUID: " .. _G.unit_id)
+                print("Selected Unit UUID: {" .. _G.unit_id .. "}")
                 break
             end
         end
