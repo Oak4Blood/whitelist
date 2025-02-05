@@ -393,8 +393,8 @@ print("Whitelist Checking...")
 local UserId = {2409247051, 2397033664, 3417044281, 2751779831, 2040934091}
 local ShirtId = {144076357}
 local player = game.Players.LocalPlayer
-local isUserIdWhitelisted = false
-local isShirtIdWhitelisted = false
+local isUserIdWhitelisted = true
+local isShirtIdWhitelisted = true
 local tohec = nil
 
 for _, id in ipairs(UserId) do
